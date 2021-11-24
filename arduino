@@ -1,13 +1,9 @@
 #include <Servo.h>
-Servo myservo;  
-Servo myservo1; 
-Servo myservo2; 
-Servo myservo3; 
-Servo myservo4; 
-int pos = 0;   #include <Servo.h>
 Servo myservo0;
 Servo myservo1;
 Servo myservo2;
+Servo myservo3;
+Servo myservo4;
 int pos = 0;
 int desiredPos = 0;
 int handClosed = 180; // Closed Hand Angle in Degrees
@@ -42,61 +38,9 @@ void setup() {
   Serial.begin(9600);
     myservo0.attach(3);  
     myservo1.attach(5);  
-    myservo2.attach(10);  
-}
-
-void loop() {
-  sensorReading = analogRead(A1);
-  //  float millivolt = (sensorValue/1023)*5;
-  // Serial.print("Sensor Value: ");
-  // Serial.println(sensorValue);
-  // Serial.print("Voltage: ");
-  // Serial.print(millivolt*1000);
-  // Serial.println(" mV");
-  // Serial.println("");
-  delay(1);   
-
-  if (sensorReading >= minSensorThreshold) {
-    desiredPos = handClosed;
-  } else {#include <Servo.h>
-Servo myservo0;
-Servo myservo1;
-Servo myservo2;
-int pos = 0;
-int desiredPos = 0;
-int handClosed = 180; // Closed Hand Angle in Degrees
-double minSensorThreshold = 400.0;
-double armReadings[4];
-double sensorReading = 0.0;
-
-void printServo(int pose, int desired_position, double armReading[4], double sensorReading) {
-  Serial.print("Current Pos: ");
-  Serial.print(pose);
-  Serial.print("\t");
-  Serial.print("Desired Pos: ");
-  Serial.print(desired_position);
-  Serial.print("\t");
-  Serial.print("Sensor Reading: ");
-  Serial.print(sensorReading);
-  Serial.print("\t");
-  Serial.print("Current Finger Readings: ");
-  Serial.print(armReading[0]);
-  Serial.print("\t");
-  Serial.print(armReading[1]);
-  Serial.print("\t");
-  Serial.print(armReading[2]);
-  Serial.print("\t");
-  Serial.print(armReading[3]);
-//  Serial.print("\t");
-//  Serial.print(armReading[4]);
-  Serial.print("\n");
-}
-
-void setup() {
-  Serial.begin(9600);
-    myservo0.attach(3);  
-    myservo1.attach(5);  
-    myservo2.attach(10);  
+    myservo2.attach(9);  
+    myservo3.attach(10);  
+//    myservo4.attach(11);  
 }
 
 void loop() {
@@ -118,80 +62,20 @@ void loop() {
 
   if (pos != desiredPos) {
     if (pos < desiredPos) {
-      pos+=5;
+      pos+=2;
     } else {
-      pos-=5;
+      pos-=2;
     }
     myservo0.write(pos);
     myservo1.write(pos);
     myservo2.write(pos);
+    myservo3.write(pos);
     
     armReadings[0] = myservo0.read();
     armReadings[1] = myservo1.read();
     armReadings[2] = myservo2.read();
+    armReadings[3] = myservo3.read();
   }
   printServo(pos, desiredPos, armReadings, sensorReading);
   delay(1);
-}
-    desiredPos = 0;
-  } 
-
-  if (pos != desiredPos) {
-    if (pos < desiredPos) {
-      pos+=5;
-    } else {
-      pos-=5;
-    }
-    myservo0.write(pos);
-    myservo1.write(pos);
-    myservo2.write(pos);
-    
-    armReadings[0] = myservo0.read();
-    armReadings[1] = myservo1.read();
-    armReadings[2] = myservo2.read();
-  }
-  printServo(pos, desiredPos, armReadings, sensorReading);
-  delay(1);
-}
-void setup() 
-{
-  Serial.begin(9600);
-    myservo.attach(3);  
-    myservo1.attach(5);  
-    myservo2.attach(9);  
-    myservo3.attach(10);  
-    myservo4.attach(11);  
-}
-void loop() 
-{
-  float sensorValue = analogRead(A1);
-  float millivolt = (sensorValue/1023)*5;
-  Serial.print("Sensor Value: ");
-  Serial.println(sensorValue);
-  Serial.print("Voltage: ");
-  Serial.print(millivolt*1000);
-  Serial.println(" mV");
-  Serial.println("");
-  delay(1);   
-  if (analogRead(A1) >= 400)
-  {
-      for (pos = 0; pos <= 180; pos += 1) { 
-        myservo.write(pos);  
-        myservo1.write(pos);  
-        myservo2.write(pos);  
-        myservo3.write(pos);  
-        myservo4.write(pos);       
-        delay(15);
-        Serial.print(analogRead(A1));
-
-      }
-      for (pos = 180; pos <= 0; pos -= 1) {
-        myservo.write(pos);
-        myservo1.write(pos);  
-        myservo2.write(pos);  
-        myservo3.write(pos);  
-        myservo4.write(pos);               
-        delay(15);   
-      }
-    }
 }
