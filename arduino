@@ -1,9 +1,8 @@
+
 #include <Servo.h>
 Servo myservo0;
 Servo myservo1;
 Servo myservo2;
-Servo myservo3;
-Servo myservo4;
 int pos = 0;
 int desiredPos = 0;
 int handClosed = 180; // Closed Hand Angle in Degrees
@@ -38,9 +37,7 @@ void setup() {
   Serial.begin(9600);
     myservo0.attach(3);  
     myservo1.attach(5);  
-    myservo2.attach(9);  
-    myservo3.attach(10);  
-//    myservo4.attach(11);  
+    myservo2.attach(10);  
 }
 
 void loop() {
@@ -69,12 +66,10 @@ void loop() {
     myservo0.write(pos);
     myservo1.write(pos);
     myservo2.write(pos);
-    myservo3.write(pos);
     
     armReadings[0] = myservo0.read();
     armReadings[1] = myservo1.read();
     armReadings[2] = myservo2.read();
-    armReadings[3] = myservo3.read();
   }
   printServo(pos, desiredPos, armReadings, sensorReading);
   delay(1);
