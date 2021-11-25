@@ -4,11 +4,13 @@ Servo myservo1;
 Servo myservo2;
 int pos = 180;
 int desiredPos = 0;
-int handOpen = 180; // Open Hand Angle in Degrees
-int handClose = 0; // Closed Hand Angle in Degrees
-double minSensorThreshold = 400.0;
+const int handOpen = 180; // Open Hand Angle in Degrees
+const int handClose = 20; // Closed Hand Angle in Degrees
+const double deltaDeg = (handOpen - handClose)/15;
+const double minSensorThreshold = 400.0;
 double armReadings[3];
 double sensorReading = 0.0;
+const bool debug = false;
 
 void printServo(int pose, int desired_position, double armReading[4], double sensorReading) {
   Serial.print("Current Pos: ");
@@ -26,13 +28,18 @@ void printServo(int pose, int desired_position, double armReading[4], double sen
   Serial.print(armReading[1]);
   Serial.print("\t");
   Serial.print(armReading[2]);
+  Serial.print("\t");
+  Serial.print(armReading[3]);
+//  Serial.print("\t");
+//  Serial.print(armReading[4]);
+  Serial.print("\n");
 }
 
 void setup() {
   Serial.begin(9600);
     myservo0.attach(3);  
     myservo1.attach(5);  
-    myservo2.attach(10);  
+    myservo2.attach(10);    
 }
 
 void loop() {
@@ -46,9 +53,9 @@ void loop() {
 
   if (pos != desiredPos) {
     if (pos < desiredPos) {
-      pos += 18; // HAS TO GO INTO 180 EVEN SO 1, 2, 6, 18, 10
+      pos += deltaDeg;
     } else {
-      pos -= 18;
+      pos -= deltaDeg;
     }
     myservo0.write(pos);
     myservo1.write(pos);
@@ -58,6 +65,8 @@ void loop() {
     armReadings[1] = myservo1.read();
     armReadings[2] = myservo2.read();
   }
-  printServo(pos, desiredPos, armReadings, sensorReading);
-  delay(1);
+  if (debug) {
+    printServo(pos, desiredPos, armReadings, sensorReading);
+  }
+  delay(10);
 }
